@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MNIST FL</string>
+    <string name="predict">Predict</string>
+    <string name="clear">Clear</string>
+    <string name="update">Update</string>
+    <string name="statistics">Statistics</string>
+    <string name="feedback">Feedback</string>
+</resources>
