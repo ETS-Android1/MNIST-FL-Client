@@ -1,6 +1,6 @@
 package com.android.example.inferenceapp;
 
-import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -10,29 +10,22 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.os.Environment;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class CanvasView extends View {
     public static final float TOLERANCE = 5;
-    public int Width, Height;
     private float mX, mY;
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private final Path mPath;
     private final Paint mPaint;
-    private final List<List<Pair<Float, Float>>> mAllPoints = new ArrayList<>();
-    private final List<Pair<Float, Float>> mConsecutivePoints = new ArrayList<>();
     Context context;
 
 
@@ -59,15 +52,12 @@ public class CanvasView extends View {
     }
 
     private void touchStart(float x, float y){
-        mConsecutivePoints.clear();
-        mConsecutivePoints.add(new Pair(x, y));
         mPath.moveTo(x, y);
         mX = x;
         mY = y;
     }
 
     private void touchMove(float x, float y){
-        mConsecutivePoints.add(new Pair(x, y));
         float dx = Math.abs(x-mX);
         float dy = Math.abs(y-mY);
         if(dx>=TOLERANCE||dy>=TOLERANCE){
@@ -81,6 +71,7 @@ public class CanvasView extends View {
         mPath.lineTo(mX, mY);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
@@ -95,8 +86,6 @@ public class CanvasView extends View {
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                mConsecutivePoints.add(new Pair(x, y));
-                mAllPoints.add(new ArrayList<>(mConsecutivePoints));
                 touchUp();
                 invalidate();
                 break;
@@ -110,24 +99,17 @@ public class CanvasView extends View {
         canvas.drawPath(mPath, mPaint);
     }
 
-    public List<List<Pair<Float, Float>>> getAllPoints() {
-        return mAllPoints;
-    }
-
     public void clearCanvas(){
         mPath.reset();
-        mAllPoints.clear();
         invalidate();
     }
 
-    public void screenShot() throws FileNotFoundException {
-        File storageDirectory = Environment.getExternalStorageDirectory();
-        File full_img = new File(storageDirectory, "full_img.jpg");
-        File img = new File(storageDirectory, "img.jpg");
+    public void screenShot(String dir) throws FileNotFoundException {
+        File full_img = new File(dir, "full_img.jpg");
+        File img = new File(dir, "img.jpg");
         Bitmap bmp = getBitmap();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(full_img));
         Bitmap resized = getResizedBitmap(bmp, 28, 28);
-//        Bitmap resized = Bitmap.createScaledBitmap(bmp, 28, 28, true);
         resized.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(img));
     }
 
@@ -163,11 +145,8 @@ public class CanvasView extends View {
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
-        // create a matrix for the manipulation
         Matrix matrix = new Matrix();
-        // resize the bit map
         matrix.postScale(scaleWidth, scaleHeight);
-        // recreate the new Bitmap
         return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
     }
 }

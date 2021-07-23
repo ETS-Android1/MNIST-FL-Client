@@ -3,6 +3,8 @@
     <string name="predict">Predict</string>
     <string name="clear">Clear</string>
     <string name="update">Update</string>
-    <string name="statistics">Statistics</string>
-    <string name="feedback">Feedback</string>
+    <string name="statistics">Accuracy</string>
+    <string name="bugs">Report Bugs</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="f1_score">F1-Score</string>
 </resources>

@@ -4,6 +4,8 @@
         android:title="@string/update"/>
     <item android:id="@+id/graph"
         android:title="@string/statistics"/>
-    <item android:id="@+id/feedback"
-        android:title="@string/feedback"/>
+    <item android:id="@+id/f1_score"
+        android:title="@string/f1_score"/>
+    <item android:id="@+id/bugs"
+        android:title="@string/bugs"/>
 </menu>
