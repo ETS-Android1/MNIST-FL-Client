@@ -7,4 +7,5 @@
     <string name="bugs">Report Bugs</string>
     <string name="accuracy">Accuracy</string>
     <string name="f1_score">F1-Score</string>
+    <string name="model_chooser">Choose a model…</string>
 </resources>

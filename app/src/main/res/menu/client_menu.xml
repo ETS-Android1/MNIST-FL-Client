@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/choose_model"
+        android:title="@string/model_chooser"/>
     <item android:id="@+id/update"
         android:title="@string/update"/>
     <item android:id="@+id/graph"
